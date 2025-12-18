@@ -1,0 +1,52 @@
+.change-password-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.change-password-card {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.change-password-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.change-password-icon {
+  font-size: 48px;
+  color: #3562F6;
+  margin-bottom: 16px;
+}
+
+.change-password-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #343339;
+}
+
+.change-password-tip {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.change-password-form {
+  margin-top: 24px;
+}
+
+.change-password-button {
+  margin-top: 8px;
+  height: 44px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+

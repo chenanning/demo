@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { getCaptcha, login, getPublicKey, type LoginRequest } from '@/api/auth';
+import { getNav } from '@/api/menu';
 import JSEncrypt from 'jsencrypt';
 import './index.css';
 
@@ -100,6 +101,14 @@ const Login: React.FC = () => {
         }
         if (res.data.aliasId) {
           localStorage.setItem('aliasId', res.data.aliasId);
+        }
+
+        // 登录成功后调用 nav 接口（用于测试，可在 F12 中查看）
+        try {
+          const navRes = await getNav();
+          console.log('导航菜单数据:', navRes.data);
+        } catch (navError) {
+          console.error('获取导航菜单失败:', navError);
         }
 
         // 检查是否首次登录

@@ -36,3 +36,4 @@ export const deletePower = (id: number) => {
 };
 
 
+

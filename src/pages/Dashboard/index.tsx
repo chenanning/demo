@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, Menu as AntMenu, Typography } from 'antd';
-import { UserOutlined, MenuOutlined, KeyOutlined, LockOutlined, LogoutOutlined, BankOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuOutlined, KeyOutlined, LockOutlined, LogoutOutlined, BankOutlined, DollarOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import RoleManagement from '../Role';
 import MenuManagement from '../Menu';
 import PowerManagement from '../Power';
 import AccountInfo from '../AccountInfo';
+import FinancialSettlement from '../FinancialSettlement';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -35,6 +36,11 @@ const Dashboard: React.FC = () => {
       icon: <LockOutlined />,
       label: '按钮管理',
     },
+    {
+      key: 'financial',
+      icon: <DollarOutlined />,
+      label: '财务结算',
+    },
   ];
 
   const renderPage = () => {
@@ -47,6 +53,8 @@ const Dashboard: React.FC = () => {
         return <MenuManagement />;
       case 'power':
         return <PowerManagement />;
+      case 'financial':
+        return <FinancialSettlement />;
       default:
         return <AccountInfo />;
     }

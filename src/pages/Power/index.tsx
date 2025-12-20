@@ -69,7 +69,7 @@ const PowerManagement: React.FC = () => {
     setEditingPower(null);
     form.resetFields();
     form.setFieldsValue({
-      type: 0,
+      type: undefined, // 类型改为可选，不设置默认值
       sort: 0,
       status: 'A',
       platformType: 1,
@@ -140,57 +140,18 @@ const PowerManagement: React.FC = () => {
       width: 150,
     },
     {
+      title: '按钮代码',
+      dataIndex: 'code',
+      width: 120,
+      ellipsis: true,
+    },
+    {
       title: '所属菜单',
       dataIndex: 'menuId',
       width: 150,
       render: (menuId: number) => {
         const menu = menuOptions.find((m) => m.value === menuId);
         return menu ? menu.label : `菜单ID: ${menuId}`;
-      },
-    },
-    {
-      title: '权限类型',
-      dataIndex: 'type',
-      width: 120,
-      render: (type: number) => {
-        const typeMap: Record<number, { label: string; color: string }> = {
-          0: { label: '查看', color: 'blue' },
-          1: { label: '新增', color: 'green' },
-          2: { label: '编辑', color: 'orange' },
-          3: { label: '审核', color: 'purple' },
-          4: { label: '删除', color: 'red' },
-        };
-        const info = typeMap[type] || { label: '未知', color: 'default' };
-        return <Tag color={info.color}>{info.label}</Tag>;
-      },
-    },
-    {
-      title: '权限标识',
-      dataIndex: 'permissLabel',
-      width: 200,
-      ellipsis: true,
-    },
-    {
-      title: '前端标识',
-      dataIndex: 'remark',
-      width: 150,
-      ellipsis: true,
-    },
-    {
-      title: '排序',
-      dataIndex: 'sort',
-      width: 80,
-      sorter: (a, b) => (a.sort || 0) - (b.sort || 0),
-    },
-    {
-      title: '可用范围',
-      dataIndex: 'accountTypeLimit',
-      width: 120,
-      render: (limit: number) => {
-        if (limit === 0) {
-          return <Tag color="red">仅超管</Tag>;
-        }
-        return <Tag color="blue">所有账户</Tag>;
       },
     },
     {
@@ -255,7 +216,7 @@ const PowerManagement: React.FC = () => {
           showQuickJumper: true,
           showTotal: (total) => `共 ${total} 条`,
         }}
-        scroll={{ x: 1500 }}
+        scroll={{ x: 1600 }}
       />
 
       {/* 新增/编辑弹窗 */}
@@ -284,65 +245,20 @@ const PowerManagement: React.FC = () => {
           </Form.Item>
 
           <Form.Item
+            label="按钮代码"
+            name="code"
+            tooltip="用于前端识别按钮，如：export、import、resetPassword等（可选）"
+            rules={[{ required: true, message: '请输入权限名称' }]}
+          >
+            <Input placeholder="如：export、import等（可选）" />
+          </Form.Item>
+
+          <Form.Item
             label="所属菜单"
             name="menuId"
             rules={[{ required: true, message: '请选择所属菜单' }]}
           >
             <Select placeholder="请选择菜单" options={menuOptions} />
-          </Form.Item>
-
-          <Form.Item
-            label="权限类型"
-            name="type"
-            rules={[{ required: true, message: '请选择权限类型' }]}
-          >
-            <Radio.Group>
-              <Radio value={0}>查看</Radio>
-              <Radio value={1}>新增</Radio>
-              <Radio value={2}>编辑</Radio>
-              <Radio value={3}>审核</Radio>
-              <Radio value={4}>删除</Radio>
-            </Radio.Group>
-          </Form.Item>
-
-          <Form.Item
-            label="权限标识（后端）"
-            name="permissLabel"
-            rules={[{ required: true, message: '请输入权限标识' }]}
-            tooltip="用于后端 @PreAuthorize 注解，如：user:add"
-          >
-            <Input placeholder="如：user:add" />
-          </Form.Item>
-
-          <Form.Item
-            label="前端标识（按钮）"
-            name="remark"
-            tooltip="用于前端 v-auth 指令，如：user:add"
-          >
-            <Input placeholder="如：user:add（可选，默认与权限标识相同）" />
-          </Form.Item>
-
-          <Form.Item label="排序" name="sort">
-            <InputNumber min={0} style={{ width: '100%' }} />
-          </Form.Item>
-
-          <Form.Item label="平台类型" name="platformType">
-            <Select>
-              <Select.Option value={1}>管理端</Select.Option>
-              <Select.Option value={2}>用户端</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="可用范围"
-            name="accountTypeLimit"
-            rules={[{ required: true, message: '请选择可用范围' }]}
-            tooltip="设置哪种类型的账户可以使用此权限"
-          >
-            <Radio.Group>
-              <Radio value={1}>所有账户可用</Radio>
-              <Radio value={0}>仅超管账户可用</Radio>
-            </Radio.Group>
           </Form.Item>
 
           <Form.Item label="状态" name="status">

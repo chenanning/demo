@@ -1,9 +1,14 @@
 import request from '@/utils/request';
-import type { Menu, MenuTreeNode, Power } from '@/types/menu';
+import type { Menu, MenuTreeNode, NavDTO, Power } from '@/types/menu';
 
 /**
  * 菜单管理 API
  */
+
+// 获取导航菜单（精简版，仅包含导航所需字段）
+export const getNav = () => {
+  return request.get<any, { code: number; data: NavDTO[] }>('/sys/menu/nav');
+};
 
 // 获取菜单树（包含权限）
 export const getMenuTree = () => {

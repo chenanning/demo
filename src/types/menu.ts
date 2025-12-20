@@ -33,19 +33,50 @@ export interface MenuTreeNode extends Menu {
 }
 
 /**
+ * 按钮权限类型定义
+ */
+export interface ButtonPowerVo {
+  name: string; // 按钮名称（显示用）
+  permissLabel: string; // 权限标识（用于权限控制，必填）
+  hasPermission: boolean; // 是否有权限
+  code?: string; // 按钮代码（可选，用于前端识别，如：export、import等）
+  type?: number; // 按钮类型（可选分类）：0=查看, 1=新增, 2=编辑, 3=审核, 4=删除, 5+=自定义类型
+  remark?: string; // 备注（可选）
+}
+
+/**
+ * 导航菜单类型定义（精简版，仅包含导航所需字段）
+ */
+export interface NavDTO {
+  id: number;
+  title: string;
+  englishTitle?: string;
+  path?: string;
+  component?: string;
+  icon?: string;
+  parentId?: number;
+  sort?: number;
+  meta?: string;
+  children?: NavDTO[];
+  powers?: ButtonPowerVo[]; // 按钮权限列表
+}
+
+/**
  * 权限/按钮类型定义
  */
 export interface Power {
   id: number;
   name: string;
   englishTitle?: string;
+  code?: string; // 按钮代码（可选，用于前端识别，如：export、import等）
   menuId: number;
-  type?: number; // 0=查看, 1=新增, 2=编辑, 3=审核, 4=删除
+  type?: number; // 按钮类型（可选分类）：0=查看, 1=新增, 2=编辑, 3=审核, 4=删除, 5+=自定义类型, NULL=无分类
   sort?: number;
   rootNode?: number;
   remark?: string;
-  permissLabel?: string;
+  permissLabel: string; // 权限标识（必填，用于权限控制）
   platformType?: number;
+  accountTypeLimit?: number; // 权限可用的最低账户类型：0=仅超管可用，1=所有账户可用
   status?: string;
   createTime?: string;
   updateTime?: string;

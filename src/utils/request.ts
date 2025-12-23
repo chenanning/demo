@@ -18,7 +18,8 @@ const publicUrls = [
   '/auth/login',
   '/auth/register',
   '/auth/captcha',
-  '/auth/public-key'
+  '/auth/public-key',
+  '/common/industryList'  // 行业列表（公开接口）
 ];
 
 // 判断是否是公开接口

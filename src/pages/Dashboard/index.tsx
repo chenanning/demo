@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Layout, Menu as AntMenu, Typography } from 'antd';
-import { UserOutlined, MenuOutlined, KeyOutlined, LockOutlined, LogoutOutlined, BankOutlined, DollarOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuOutlined, KeyOutlined, LockOutlined, LogoutOutlined, BankOutlined, DollarOutlined, TeamOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import RoleManagement from '../Role';
 import MenuManagement from '../Menu';
 import PowerManagement from '../Power';
 import AccountInfo from '../AccountInfo';
 import FinancialSettlement from '../FinancialSettlement';
+import CustomerManagement from '../CustomerManagement';
+import RoleTemplateManagement from '../RoleTemplate';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -27,6 +29,11 @@ const Dashboard: React.FC = () => {
       label: '角色管理',
     },
     {
+      key: 'roleTemplate',
+      icon: <FileTextOutlined />,
+      label: '角色模板',
+    },
+    {
       key: 'menu',
       icon: <MenuOutlined />,
       label: '菜单管理',
@@ -41,6 +48,11 @@ const Dashboard: React.FC = () => {
       icon: <DollarOutlined />,
       label: '财务结算',
     },
+    {
+      key: 'customer',
+      icon: <TeamOutlined />,
+      label: '客户管理',
+    },
   ];
 
   const renderPage = () => {
@@ -49,12 +61,16 @@ const Dashboard: React.FC = () => {
         return <AccountInfo />;
       case 'role':
         return <RoleManagement />;
+      case 'roleTemplate':
+        return <RoleTemplateManagement />;
       case 'menu':
         return <MenuManagement />;
       case 'power':
         return <PowerManagement />;
       case 'financial':
         return <FinancialSettlement />;
+      case 'customer':
+        return <CustomerManagement />;
       default:
         return <AccountInfo />;
     }

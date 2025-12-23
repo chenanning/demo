@@ -76,16 +76,8 @@ const ChangePassword: React.FC = () => {
           <Form.Item
             label="新密码"
             name="newPassword"
-            rules={[
-              { required: true, message: '请输入新密码' },
-              {
-                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/,
-                message: '密码至少8位，包含大小写字母和数字',
-              },
-            ]}
           >
             <Input.Password
-              placeholder="请输入新密码（至少8位，包含大小写字母和数字）"
               size="large"
               prefix={<LockOutlined />}
             />

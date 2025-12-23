@@ -1,4 +1,6 @@
 import request from '@/utils/request';
+import type { Customer, CustomerPageParams, CustomerFormData } from '@/types/customer';
+import type { PageResult } from '@/types/member';
 
 /**
  * 账户管理 API
@@ -58,4 +60,27 @@ export const deleteQualification = (qualificationId: number) => {
   return request.delete<any, { code: number; message: string }>(`/sys/account-qualification/${qualificationId}`);
 };
 
+// 客户管理相关接口
+// 分页查询账户列表
+export const getCustomerPage = (params: CustomerPageParams) => {
+  const { page, limit, accountName, customerType } = params;
+  return request.get<any, { code: number; data: PageResult<Customer> }>('/sys/account/page', {
+    params: {
+      current: page,
+      size: limit,
+      accountName: accountName,
+      customerType: customerType,
+    },
+  });
+};
+
+// 创建账户
+export const createCustomer = (data: CustomerFormData) => {
+  return request.post<any, { code: number; message: string }>('/sys/account', data);
+};
+
+// 删除账户
+export const deleteCustomer = (id: number) => {
+  return request.delete<any, { code: number; message: string }>(`/sys/account/${id}`);
+};
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Input, Button, message, Select, Modal, Upload, Popconfirm } from 'antd';
+import { Card, Form, Input, Button, message, Select, Modal, Upload, Popconfirm, TreeSelect } from 'antd';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   getCurrentAccount,
@@ -9,6 +9,7 @@ import {
   type AccountInfo,
   type Qualification,
 } from '@/api/account';
+import { getIndustryList, type IndustryTreeNode } from '@/api/common';
 import MemberManagement from '../Member';
 import RoleManagement from '../Role';
 import './index.css';
@@ -23,6 +24,7 @@ const AccountInfo: React.FC = () => {
   const [qualificationModalVisible, setQualificationModalVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState<'account' | 'member' | 'role'>('account');
+  const [industryTreeData, setIndustryTreeData] = useState<any[]>([]);
 
   // 加载账户信息
   const loadAccount = async () => {
@@ -46,8 +48,36 @@ const AccountInfo: React.FC = () => {
     }
   };
 
+  // 加载行业树数据
+  const loadIndustryTree = async () => {
+    try {
+      const res = await getIndustryList();
+      if (res.code === 200 && res.data) {
+        // 将后端返回的树型数据转换为TreeSelect需要的格式
+        const convertToTreeData = (nodes: IndustryTreeNode[]): any[] => {
+          return nodes.map(node => ({
+            title: node.name,
+            value: node.id,
+            key: node.id,
+            children: node.children && node.children.length > 0 
+              ? convertToTreeData(node.children) 
+              : undefined,
+            // 只有二级分类可以选择（level === 2）
+            selectable: node.level === 2,
+            // 一级分类禁用选择，只作为分组显示
+            disabled: node.level === 1,
+          }));
+        };
+        setIndustryTreeData(convertToTreeData(res.data));
+      }
+    } catch (error: any) {
+      console.error('加载行业列表失败', error);
+    }
+  };
+
   useEffect(() => {
     loadAccount();
+    loadIndustryTree();
   }, []);
 
   // 更新账户信息
@@ -151,13 +181,15 @@ const AccountInfo: React.FC = () => {
                 name="category"
                 className="form-item"
               >
-                <Select placeholder="请选择账户行业" allowClear>
-                  <Option value={1}>互联网</Option>
-                  <Option value={2}>金融</Option>
-                  <Option value={3}>教育</Option>
-                  <Option value={4}>医疗</Option>
-                  <Option value={5}>其他</Option>
-                </Select>
+                <TreeSelect
+                  placeholder="请选择账户行业"
+                  allowClear
+                  treeData={industryTreeData}
+                  treeDefaultExpandAll
+                  showSearch
+                  treeNodeFilterProp="title"
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
             </div>
 
